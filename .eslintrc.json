@@ -28,8 +28,15 @@
     "import/no-anonymous-default-export": "off",
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error",
+    "react/react-in-jsx-scope": "off",
     "tailwindcss/no-custom-classname": "off",
-    "tailwindcss/classnames-order": "error",
-    "react/react-in-jsx-scope": "off"
+    "tailwindcss/classnames-order": [
+      2,
+      {
+        "callees": ["classNames", "apply"]
+      }
+    ],
+    "tailwindcss/no-arbitrary-value": "off",
+    "tailwindcss/no-contradicting-classname": "error"
   }
 }
