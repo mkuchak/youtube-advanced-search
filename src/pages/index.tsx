@@ -11,14 +11,14 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>YouTube Advanced Search</title>
-        <meta name="description" content="YouTube Advanced Search" />
+        <title>YouTube - Advanced Search</title>
+        <meta name="description" content="Advanced YouTube search." />
       </Head>
 
       <main className={styles.main}>
         <div>
-          <Image src="/boilerplate.svg" alt="Favicon" width={64} height={64} />{' '}
-          Hello, <a href="#">boilerplate!</a>
+          <Image src="/favicon.svg" alt="Favicon" width={64} height={64} />{' '}
+          Hello, <a href="#">favicon!</a>
         </div>
       </main>
     </>
