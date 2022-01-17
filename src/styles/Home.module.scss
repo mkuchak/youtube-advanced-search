@@ -1,0 +1,19 @@
+.main {
+  @apply flex justify-center items-center mx-auto h-screen;
+}
+
+.main div {
+  @apply flex items-center box-decoration-clone bg-gradient-to-r from-indigo-600 to-pink-500 text-2xl text-white p-8 rounded-full transition duration-300;
+}
+
+.main div:hover {
+  @apply shadow-2xl;
+}
+
+.main a {
+  @apply mx-1 font-semibold;
+}
+
+.main a:hover {
+  @apply underline;
+}
