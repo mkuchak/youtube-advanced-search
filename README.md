@@ -1,13 +1,15 @@
-# Next.js Boilerplate
+# YouTube Advanced Search
 
-- TypeScript
-- Start structure with `_document.tsx`
-- Folder structure in `/src`
-- Roboto font
-- TailwindCSS with JIT
-- ESLint
-  - Standard
-  - Import Sort
-  - TailwindCSS Sort
+```bash
+# Copy environment file
+cp .env.example .env.local
 
-Under construction.
+# Install packages
+npm install
+
+# Start development server
+npm run dev
+
+# Build and start server
+npm run build && npm run start
+```
