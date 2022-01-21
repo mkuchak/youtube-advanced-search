@@ -24,6 +24,7 @@
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
+    "multiline-ternary": "off",
     "@typescript-eslint/semi": "off",
     "import/no-anonymous-default-export": "off",
     "simple-import-sort/exports": "error",
