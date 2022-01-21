@@ -29,6 +29,7 @@ export default class MyDocument extends Document {
           <link rel="icon" href="/favicon.svg" />
         </Head>
         <body>
+          <div id="root"></div>
           <Main />
           <NextScript />
         </body>

@@ -22,6 +22,7 @@ body {
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  @apply bg-white dark:bg-gray-900;
 }
 
 @media (max-width: 1080px) {
@@ -38,7 +39,6 @@ body {
 
 html,
 body,
-input,
 textarea,
 select,
 button {
@@ -46,6 +46,13 @@ button {
   font-weight: 400;
   font-family: "Roboto", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  outline-width: 0;
 }
 
 img,
