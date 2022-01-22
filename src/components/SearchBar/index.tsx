@@ -12,7 +12,11 @@ const ReactTooltip = dynamic(() => import('react-tooltip'), {
 
 export function SearchBar () {
   const [query, setQuery] = useState('')
-  const { handleOpenAdvancedSearchModal } = useContext(AdvancedSearchContext)
+  const {
+    advancedSearchSettings,
+    totalSelectedSettings,
+    handleOpenAdvancedSearchModal
+  } = useContext(AdvancedSearchContext)
 
   return (
     <>
@@ -73,13 +77,27 @@ export function SearchBar () {
               </>
             )}
 
-            <VscSettings
-              size="22"
-              data-tip
-              data-for="setting-tip"
-              className="min-w-[22px] text-slate-600 dark:text-slate-400 focus:outline-none cursor-pointer"
+            <button
+              type="button"
+              className="flex relative cursor-pointer"
               onClick={handleOpenAdvancedSearchModal}
-            />
+            >
+              <VscSettings
+                size="22"
+                data-tip
+                data-for="setting-tip"
+                className="relative min-w-[22px] text-slate-600 dark:text-slate-400 focus:outline-none"
+              />
+              <span
+                className={classNames(
+                  'flex absolute right-0 justify-center items-center -m-2.5 w-4 h-4',
+                  'text-xs font-medium text-white bg-[#FF0100] rounded-full',
+                  totalSelectedSettings(advancedSearchSettings) ? '' : 'hidden'
+                )}
+              >
+                {totalSelectedSettings(advancedSearchSettings)}
+              </span>
+            </button>
 
             <ReactTooltip
               id="setting-tip"

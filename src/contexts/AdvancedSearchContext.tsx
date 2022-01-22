@@ -12,6 +12,7 @@ interface AdvancedSearchSettings {
 
 interface AdvancedSearchContextData {
   advancedSearchSettings: AdvancedSearchSettings;
+  totalSelectedSettings: (settings: AdvancedSearchSettings) => number;
   handleSelectCountry: (country: string) => void;
   handleSelectCategory: (category: number) => void;
   handleStartDateChange: (date: Date) => void;
@@ -66,6 +67,14 @@ export function AdvancedSearchProvider ({
     )
   }, [advancedSearchSettings])
 
+  function totalSelectedSettings (settings: AdvancedSearchSettings) {
+    return Object.values(settings).reduce((acc, curr) => {
+      if (Array.isArray(curr)) {
+        return curr.length > 0 ? acc + curr.length : acc
+      }
+      return curr !== null && curr !== 'any' && curr !== -1 ? acc + 1 : acc
+    }, 0)
+  }
 
   function handleSelectCountry (country: string) {
     setAdvancedSearchSettings((prevState) => ({
@@ -163,6 +172,7 @@ export function AdvancedSearchProvider ({
     <AdvancedSearchContext.Provider
       value={{
         advancedSearchSettings,
+        totalSelectedSettings,
         handleSelectCountry,
         handleSelectCategory,
         handleStartDateChange,
