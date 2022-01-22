@@ -31,13 +31,14 @@ export default async function handler (
 &publishedBefore=2100-01-01T00:00:00Z
 &videoCategoryId=10 // see below
 &videoDefinition=any // any, high, standard
-&videoDimension=any // 2d, 3d, standard
+&videoDimension=any // 2d, 3d, any
 &videoDuration=any // any, long (longer than 20 minutes), medium (between 4 and 20 minutes), short (less than 4 minutes)
 &videoEmbeddable=any // true
 &videoLicense=any // any, creativeCommon, youtube
 &videoSyndicated=any // true
 &videoType=any // any, episode, movie
 &regionCode=US
+&eventType=live // upcoming, completed, live
 &q=clean%20architecture%20and%20ddd
 &pageToken=XXXXXX
 &prevPageToken=XXXXXX
