@@ -1,6 +1,6 @@
 import 'react-datepicker/dist/react-datepicker.css'
 
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import DatePicker from 'react-datepicker'
 import { VscChromeClose } from 'react-icons/vsc'
 import Modal from 'react-modal'
@@ -10,28 +10,20 @@ import { classNames } from '../../utils/classNames'
 import categories from './categoryList.json'
 import countries from './countryList.json'
 
-interface SettingsProps {
-  country: string;
-  category: number;
-  startDate: Date | null;
-  endDate: Date | null;
-  sortBy: string;
-  duration: string;
-  features: string[];
-}
-
 export function AdvancedSearchModal () {
-  const [settings, setSettings] = useState<SettingsProps>({
-    country: 'any',
-    category: -1,
-    startDate: null,
-    endDate: null,
-    sortBy: '',
-    duration: '',
-    features: []
-  })
-  const { isAdvancedSearchModalOpen, handleCloseAdvancedSearchModal } =
-    useContext(AdvancedSearchContext)
+  const {
+    advancedSearchSettings,
+    isAdvancedSearchModalOpen,
+    handleSelectCountry,
+    handleSelectCategory,
+    handleStartDateChange,
+    handleEndDateChange,
+    handleSelectSortBy,
+    handleSelectDuration,
+    handleSelectFeature,
+    handleResetSettings,
+    handleCloseAdvancedSearchModal
+  } = useContext(AdvancedSearchContext)
 
   return (
     <Modal
@@ -66,10 +58,8 @@ export function AdvancedSearchModal () {
         <h2 className="!m-0 font-medium dark:text-slate-200">Country</h2>
 
         <select
-          onChange={(e) =>
-            setSettings({ ...settings, country: e.target.value })
-          }
-          value={settings.country}
+          onChange={(e) => handleSelectCountry(e.target.value)}
+          value={String(advancedSearchSettings.country)}
           className={classNames(
             'w-full text-sm bg-transparent border-transparent focus:border-transparent',
             'dark:text-slate-200 dark:bg-slate-800 focus:ring-0'
@@ -87,10 +77,8 @@ export function AdvancedSearchModal () {
         <h2 className="!m-0 font-medium dark:text-slate-200">Category</h2>
 
         <select
-          onChange={(e) =>
-            setSettings({ ...settings, category: Number(e.target.value) })
-          }
-          value={settings.category}
+          onChange={(e) => handleSelectCategory(Number(e.target.value))}
+          value={Number(advancedSearchSettings.category)}
           className={classNames(
             'w-full text-sm bg-transparent border-transparent focus:border-transparent',
             'dark:text-slate-200 dark:bg-slate-800 focus:ring-0'
@@ -116,10 +104,8 @@ export function AdvancedSearchModal () {
                 'w-[5.5rem] dark:text-slate-200 bg-transparent focus:ring-0',
                 'dark:border-slate-600'
               )}
-              selected={settings.startDate}
-              onChange={(date: any) =>
-                setSettings({ ...settings, startDate: date })
-              }
+              selected={advancedSearchSettings.startDate}
+              onChange={(date: Date) => handleStartDateChange(date)}
             />
           </label>
           <label htmlFor="to" className="flex items-center space-x-3 text-sm">
@@ -130,10 +116,8 @@ export function AdvancedSearchModal () {
                 'w-[5.5rem] dark:text-slate-200 bg-transparent focus:ring-0',
                 'dark:border-slate-600'
               )}
-              selected={settings.endDate}
-              onChange={(date: any) =>
-                setSettings({ ...settings, endDate: date })
-              }
+              selected={advancedSearchSettings.endDate}
+              onChange={(date: Date) => handleEndDateChange(date)}
             />
           </label>
         </div>
@@ -148,24 +132,12 @@ export function AdvancedSearchModal () {
               <button
                 key={option}
                 type="button"
-                onClick={() => {
-                  if (settings.sortBy === option) {
-                    setSettings({
-                      ...settings,
-                      sortBy: ''
-                    })
-                  } else {
-                    setSettings({
-                      ...settings,
-                      sortBy: option
-                    })
-                  }
-                }}
+                onClick={() => handleSelectSortBy(option)}
                 className={classNames(
                   'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
                   'lowercase hover:bg-stone-50 border border-stone-300',
                   'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
-                  settings.sortBy === option
+                  advancedSearchSettings.sortBy === option
                     ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
                     : ''
                 )}
@@ -189,24 +161,12 @@ export function AdvancedSearchModal () {
             <button
               key={option}
               type="button"
-              onClick={() => {
-                if (settings.duration === option) {
-                  setSettings({
-                    ...settings,
-                    duration: ''
-                  })
-                } else {
-                  setSettings({
-                    ...settings,
-                    duration: option
-                  })
-                }
-              }}
+              onClick={() => handleSelectDuration(option)}
               className={classNames(
                 'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
                 'lowercase hover:bg-stone-50 border border-stone-300',
                 'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
-                settings.duration === option
+                advancedSearchSettings.duration === option
                   ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
                   : ''
               )}
@@ -241,22 +201,12 @@ export function AdvancedSearchModal () {
             <button
               key={option}
               type="button"
-              onClick={() => {
-                const newSettings = { ...settings }
-                if (newSettings.features.includes(option)) {
-                  newSettings.features = newSettings.features.filter(
-                    (feature) => feature !== option
-                  )
-                } else {
-                  newSettings.features.push(option)
-                }
-                setSettings(newSettings)
-              }}
+              onClick={() => handleSelectFeature(option)}
               className={classNames(
                 'py-1.5 px-3 mr-2 mb-2 text-sm font-light text-stone-800 rounded-full',
                 'lowercase hover:bg-stone-50 border border-stone-300',
                 'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
-                settings.features.includes(option)
+                advancedSearchSettings.features.includes(option)
                   ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
                   : ''
               )}
@@ -276,17 +226,7 @@ export function AdvancedSearchModal () {
             'dark:text-slate-100 dark:hover:text-slate-200 dark:hover:ring-slate-600',
             'dark:bg-slate-700 dark:hover:bg-gray-900 dark:duration-300 dark:transform'
           )}
-          onClick={() => {
-            setSettings({
-              country: 'any',
-              category: -1,
-              startDate: null,
-              endDate: null,
-              sortBy: '',
-              duration: '',
-              features: []
-            })
-          }}
+          onClick={() => handleResetSettings()}
         >
           Reset Settings
         </button>
