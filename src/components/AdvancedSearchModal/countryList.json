@@ -1,5 +1,5 @@
 [
-  { "code": "any", "name": "Any" },
+  { "code": "", "name": "Any" },
   { "code": "AF", "name": "Afghanistan" },
   { "code": "AX", "name": "Aland Islands" },
   { "code": "AL", "name": "Albania" },

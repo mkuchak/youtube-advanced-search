@@ -1,5 +1,5 @@
 [
-  { "code": -1, "name": "Any" },
+  { "code": "", "name": "Any" },
   { "code": 2, "name": "Autos & Vehicles" },
   { "code": 1, "name": "Film & Animation" },
   { "code": 10, "name": "Music" },

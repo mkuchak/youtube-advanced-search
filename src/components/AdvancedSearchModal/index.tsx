@@ -14,13 +14,10 @@ export function AdvancedSearchModal () {
   const {
     advancedSearchSettings,
     isAdvancedSearchModalOpen,
-    handleSelectCountry,
-    handleSelectCategory,
-    handleStartDateChange,
-    handleEndDateChange,
-    handleSelectSortBy,
-    handleSelectDuration,
-    handleSelectFeature,
+    handleSelectOption,
+    handleDateChange,
+    handleSelectOne,
+    handleSelectMany,
     handleResetSettings,
     handleCloseAdvancedSearchModal
   } = useContext(AdvancedSearchContext)
@@ -58,7 +55,8 @@ export function AdvancedSearchModal () {
         <h2 className="!m-0 font-medium dark:text-slate-200">Country</h2>
 
         <select
-          onChange={(e) => handleSelectCountry(e.target.value)}
+          name="country"
+          onChange={handleSelectOption}
           value={String(advancedSearchSettings.country)}
           className={classNames(
             'w-full text-sm bg-transparent border-transparent focus:border-transparent',
@@ -77,7 +75,8 @@ export function AdvancedSearchModal () {
         <h2 className="!m-0 font-medium dark:text-slate-200">Category</h2>
 
         <select
-          onChange={(e) => handleSelectCategory(Number(e.target.value))}
+          name="category"
+          onChange={handleSelectOption}
           value={Number(advancedSearchSettings.category)}
           className={classNames(
             'w-full text-sm bg-transparent border-transparent focus:border-transparent',
@@ -99,25 +98,25 @@ export function AdvancedSearchModal () {
           <label htmlFor="from" className="flex items-center space-x-3 text-sm">
             <span>From: </span>
             <DatePicker
+              onChange={(date: Date) => handleDateChange(date, 'startDate')}
+              selected={advancedSearchSettings.startDate}
               className={classNames(
                 'p-1.5 font-light rounded-md border border-stone-300',
                 'w-[5.5rem] dark:text-slate-200 bg-transparent focus:ring-0',
                 'dark:border-slate-600'
               )}
-              selected={advancedSearchSettings.startDate}
-              onChange={(date: Date) => handleStartDateChange(date)}
             />
           </label>
           <label htmlFor="to" className="flex items-center space-x-3 text-sm">
             <span>To: </span>
             <DatePicker
+              onChange={(date: Date) => handleDateChange(date, 'endDate')}
+              selected={advancedSearchSettings.endDate}
               className={classNames(
                 'p-1.5 font-light rounded-md border border-stone-300',
                 'w-[5.5rem] dark:text-slate-200 bg-transparent focus:ring-0',
                 'dark:border-slate-600'
               )}
-              selected={advancedSearchSettings.endDate}
-              onChange={(date: Date) => handleEndDateChange(date)}
             />
           </label>
         </div>
@@ -131,8 +130,9 @@ export function AdvancedSearchModal () {
             (option) => (
               <button
                 key={option}
+                name="sortBy"
                 type="button"
-                onClick={() => handleSelectSortBy(option)}
+                onClick={handleSelectOne}
                 className={classNames(
                   'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
                   'lowercase hover:bg-stone-50 border border-stone-300',
@@ -160,8 +160,9 @@ export function AdvancedSearchModal () {
           ].map((option) => (
             <button
               key={option}
+              name="duration"
               type="button"
-              onClick={() => handleSelectDuration(option)}
+              onClick={handleSelectOne}
               className={classNames(
                 'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
                 'lowercase hover:bg-stone-50 border border-stone-300',
@@ -193,15 +194,16 @@ export function AdvancedSearchModal () {
             'live',
             'movie',
             'high definition',
-            '3D video',
+            '3d video',
             'embeddable',
             'creative commons',
             'syndicated'
           ].map((option) => (
             <button
               key={option}
+              name="features"
               type="button"
-              onClick={() => handleSelectFeature(option)}
+              onClick={handleSelectMany}
               className={classNames(
                 'py-1.5 px-3 mr-2 mb-2 text-sm font-light text-stone-800 rounded-full',
                 'lowercase hover:bg-stone-50 border border-stone-300',
