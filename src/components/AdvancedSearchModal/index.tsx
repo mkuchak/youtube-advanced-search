@@ -55,9 +55,9 @@ export function AdvancedSearchModal () {
         <h2 className="!m-0 font-medium dark:text-slate-200">Country</h2>
 
         <select
-          name="country"
+          name="regionCode"
           onChange={handleSelectOption}
-          value={String(advancedSearchSettings.country)}
+          value={String(advancedSearchSettings.regionCode)}
           className={classNames(
             'w-full text-sm bg-transparent border-transparent focus:border-transparent',
             'dark:text-slate-200 dark:bg-slate-800 focus:ring-0'
@@ -75,9 +75,9 @@ export function AdvancedSearchModal () {
         <h2 className="!m-0 font-medium dark:text-slate-200">Category</h2>
 
         <select
-          name="category"
+          name="videoCategoryId"
           onChange={handleSelectOption}
-          value={Number(advancedSearchSettings.category)}
+          value={Number(advancedSearchSettings.videoCategoryId)}
           className={classNames(
             'w-full text-sm bg-transparent border-transparent focus:border-transparent',
             'dark:text-slate-200 dark:bg-slate-800 focus:ring-0'
@@ -98,8 +98,10 @@ export function AdvancedSearchModal () {
           <label htmlFor="from" className="flex items-center space-x-3 text-sm">
             <span>From: </span>
             <DatePicker
-              onChange={(date: Date) => handleDateChange(date, 'startDate')}
-              selected={advancedSearchSettings.startDate}
+              onChange={(date: Date) =>
+                handleDateChange(date, 'publishedBefore')
+              }
+              selected={advancedSearchSettings.publishedBefore}
               className={classNames(
                 'p-1.5 font-light rounded-md border border-stone-300',
                 'w-[5.5rem] dark:text-slate-200 bg-transparent focus:ring-0',
@@ -110,8 +112,10 @@ export function AdvancedSearchModal () {
           <label htmlFor="to" className="flex items-center space-x-3 text-sm">
             <span>To: </span>
             <DatePicker
-              onChange={(date: Date) => handleDateChange(date, 'endDate')}
-              selected={advancedSearchSettings.endDate}
+              onChange={(date: Date) =>
+                handleDateChange(date, 'publishedAfter')
+              }
+              selected={advancedSearchSettings.publishedAfter}
               className={classNames(
                 'p-1.5 font-light rounded-md border border-stone-300',
                 'w-[5.5rem] dark:text-slate-200 bg-transparent focus:ring-0',
@@ -126,26 +130,32 @@ export function AdvancedSearchModal () {
         <h2 className="!m-0 font-medium dark:text-slate-200">Sort by</h2>
 
         <div className="flex overflow-x-auto space-x-2 w-full whitespace-nowrap">
-          {['relevance', 'date', 'rating', 'title', 'videos', 'views'].map(
-            (option) => (
-              <button
-                key={option}
-                name="sortBy"
-                type="button"
-                onClick={handleSelectOne}
-                className={classNames(
-                  'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
-                  'lowercase hover:bg-stone-50 border border-stone-300',
-                  'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
-                  advancedSearchSettings.sortBy === option
-                    ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
-                    : ''
-                )}
-              >
-                {option}
-              </button>
-            )
-          )}
+          {Object.entries({
+            relevance: 'relevance',
+            date: 'date',
+            rating: 'rating',
+            title: 'title',
+            videos: 'videoCount',
+            views: 'viewCount'
+          }).map((option) => (
+            <button
+              key={option[0]}
+              name="order"
+              value={option[1]}
+              type="button"
+              onClick={handleSelectOne}
+              className={classNames(
+                'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
+                'lowercase hover:bg-stone-50 border border-stone-300',
+                'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
+                advancedSearchSettings.order === option[1]
+                  ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
+                  : ''
+              )}
+            >
+              {option[0]}
+            </button>
+          ))}
         </div>
 
         <hr className="!my-4 border-t border-slate-200 dark:border-slate-700" />
@@ -153,67 +163,103 @@ export function AdvancedSearchModal () {
         <h2 className="!m-0 font-medium dark:text-slate-200">Duration</h2>
 
         <div className="flex overflow-x-auto space-x-2 w-full whitespace-nowrap">
-          {[
-            'less than 4 minutes',
-            '4 to 20 minutes',
-            'more than 20 minutes'
-          ].map((option) => (
+          {Object.entries({
+            'less than 4 minutes': 'short',
+            '4 to 20 minutes': 'medium',
+            'more than 20 minutes': 'long'
+          }).map((option) => (
             <button
-              key={option}
-              name="duration"
+              key={option[0]}
+              name="videoDuration"
+              value={option[1]}
               type="button"
               onClick={handleSelectOne}
               className={classNames(
                 'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
                 'lowercase hover:bg-stone-50 border border-stone-300',
                 'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
-                advancedSearchSettings.duration === option
+                advancedSearchSettings.videoDuration === option[1]
                   ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
                   : ''
               )}
             >
-              {option}
+              {option[0]}
             </button>
           ))}
         </div>
 
         <hr className="!my-4 border-t border-slate-200 dark:border-slate-700" />
 
-        <h2 className="!m-0 font-medium dark:text-slate-200"></h2>
+        <h2 className="!m-0 font-medium dark:text-slate-200">Type</h2>
+
+        <div className="flex overflow-x-auto space-x-2 w-full whitespace-nowrap">
+          {Object.entries({
+            video: ['video', 'video'],
+            channel: ['channel', 'channel'],
+            playlist: ['playlist', 'playlist']
+          }).map((option) => (
+            <button
+              key={option[0]}
+              name="type"
+              value={JSON.stringify({
+                key: option[1][0],
+                value: option[1][1]
+              })}
+              type="button"
+              onClick={handleSelectMany}
+              className={classNames(
+                'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
+                'lowercase hover:bg-stone-50 border border-stone-300',
+                'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
+                Object.keys(advancedSearchSettings.type).includes(option[1][0])
+                  ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
+                  : ''
+              )}
+            >
+              {option[0]}
+            </button>
+          ))}
+        </div>
+
+        <hr className="!my-4 border-t border-slate-200 dark:border-slate-700" />
+
         <h2 className="!m-0 font-medium text-slate-800 dark:text-slate-200">
           Features
         </h2>
 
         <div className="w-full">
-          {[
-            'subtitles',
-            'strict content',
-            'video',
-            'channel',
-            'playlist',
-            'live',
-            'movie',
-            'high definition',
-            '3d video',
-            'embeddable',
-            'creative commons',
-            'syndicated'
-          ].map((option) => (
+          {Object.entries({
+            subtitles: ['videoCaption', 'closedCaption'],
+            'strict content': ['safeSearch', 'strict'],
+            live: ['eventType', 'live'],
+            movie: ['videoType', 'movie'],
+            'high definition': ['videoDefinition', 'high'],
+            '3d video': ['videoDimension', '3d'],
+            embeddable: ['videoEmbeddable', 'true'],
+            'creative commons': ['videoLicense', 'creativeCommon'],
+            syndicated: ['videoSyndicated', 'true']
+          }).map((option) => (
             <button
-              key={option}
+              key={option[0]}
               name="features"
+              value={JSON.stringify({
+                key: option[1][0],
+                value: option[1][1]
+              })}
               type="button"
               onClick={handleSelectMany}
               className={classNames(
                 'py-1.5 px-3 mr-2 mb-2 text-sm font-light text-stone-800 rounded-full',
                 'lowercase hover:bg-stone-50 border border-stone-300',
                 'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
-                advancedSearchSettings.features.includes(option)
+                Object.keys(advancedSearchSettings.features).includes(
+                  option[1][0]
+                )
                   ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
                   : ''
               )}
             >
-              {option}
+              {option[0]}
             </button>
           ))}
         </div>

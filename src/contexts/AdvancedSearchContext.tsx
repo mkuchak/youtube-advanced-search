@@ -8,13 +8,14 @@ import {
 } from 'react'
 
 interface AdvancedSearchSettings {
-  country: string | null;
-  category: number | null;
-  startDate: Date | null;
-  endDate: Date | null;
-  sortBy: string | null;
-  duration: string | null;
-  features: string[];
+  regionCode: string | null;
+  videoCategoryId: number | null;
+  publishedBefore: Date | null;
+  publishedAfter: Date | null;
+  order: string | null;
+  videoDuration: string | null;
+  type: { [key: string]: string };
+  features: { [key: string]: string };
 }
 
 interface AdvancedSearchContextData {
@@ -38,19 +39,22 @@ export const AdvancedSearchContext = createContext(
   {} as AdvancedSearchContextData
 )
 
+const initialAdvancedSearchSettings: AdvancedSearchSettings = {
+  regionCode: null,
+  videoCategoryId: null,
+  publishedBefore: null,
+  publishedAfter: null,
+  order: null,
+  videoDuration: null,
+  type: {},
+  features: {}
+}
+
 export function AdvancedSearchProvider ({
   children
 }: AdvancedSearchProviderProps) {
   const [advancedSearchSettings, setAdvancedSearchSettings] =
-    useState<AdvancedSearchSettings>({
-      country: null,
-      category: null,
-      startDate: null,
-      endDate: null,
-      sortBy: null,
-      duration: null,
-      features: []
-    })
+    useState<AdvancedSearchSettings>(initialAdvancedSearchSettings)
   const [isAdvancedSearchModalOpen, setIsAdvancedSearchModalOpen] =
     useState(false)
 
@@ -61,13 +65,13 @@ export function AdvancedSearchProvider ({
 
     if (advancedSearchSettings) {
       const advancedSearchSettingsParsed = JSON.parse(advancedSearchSettings)
-      advancedSearchSettingsParsed.startDate =
-        advancedSearchSettingsParsed.startDate
-          ? new Date(advancedSearchSettingsParsed.startDate)
+      advancedSearchSettingsParsed.publishedBefore =
+        advancedSearchSettingsParsed.publishedBefore
+          ? new Date(advancedSearchSettingsParsed.publishedBefore)
           : null
-      advancedSearchSettingsParsed.endDate =
-        advancedSearchSettingsParsed.endDate
-          ? new Date(advancedSearchSettingsParsed.endDate)
+      advancedSearchSettingsParsed.publishedAfter =
+        advancedSearchSettingsParsed.publishedAfter
+          ? new Date(advancedSearchSettingsParsed.publishedAfter)
           : null
       setAdvancedSearchSettings(advancedSearchSettingsParsed)
     }
@@ -82,10 +86,10 @@ export function AdvancedSearchProvider ({
 
   function totalSelectedSettings (settings: AdvancedSearchSettings) {
     return Object.values(settings).reduce((acc, curr) => {
-      if (Array.isArray(curr)) {
-        return acc + curr.length
+      if (curr instanceof Object && !(curr instanceof Date)) {
+        return acc + Object.keys(curr).length
       }
-      return (curr !== null && curr !== '') ? acc + 1 : acc
+      return curr !== null && curr !== '' ? acc + 1 : acc
     }, 0)
   }
 
@@ -106,7 +110,7 @@ export function AdvancedSearchProvider ({
   }
 
   function handleSelectOne ({
-    currentTarget: { name, innerText: value }
+    currentTarget: { name, value }
   }: MouseEvent<HTMLButtonElement>) {
     const option = advancedSearchSettings[name as keyof AdvancedSearchSettings]
 
@@ -124,35 +128,55 @@ export function AdvancedSearchProvider ({
   }
 
   function handleSelectMany ({
-    currentTarget: { name, innerText: value }
+    currentTarget: { name, value: selectedValue }
   }: MouseEvent<HTMLButtonElement>) {
     const options = advancedSearchSettings[
       name as keyof AdvancedSearchSettings
-    ] as string[]
+    ] as {}
+    const { key, value } = JSON.parse(selectedValue)
 
-    if (options.includes(value)) {
+    if (Object.keys(options).includes(key)) {
       setAdvancedSearchSettings((prevState) => ({
         ...prevState,
-        [name]: options.filter((v) => v !== value)
+        [name]: {
+          ...Object.fromEntries(
+            Object.entries(options).filter(([k]) => k !== key)
+          )
+        }
       }))
     } else {
       setAdvancedSearchSettings((prevState) => ({
         ...prevState,
-        [name]: [...options, value]
+        [name]: {
+          ...options,
+          [key]: value
+        }
       }))
     }
   }
 
+  // function handleSelectMany ({
+  //   currentTarget: { name, innerText: value }
+  // }: MouseEvent<HTMLButtonElement>) {
+  //   const options = advancedSearchSettings[
+  //     name as keyof AdvancedSearchSettings
+  //   ] as string
+
+  //   if (options.includes(value)) {
+  //     setAdvancedSearchSettings((prevState) => ({
+  //       ...prevState,
+  //       [name]: options.filter((v) => v !== value)
+  //     }))
+  //   } else {
+  //     setAdvancedSearchSettings((prevState) => ({
+  //       ...prevState,
+  //       [name]: [...options, value]
+  //     }))
+  //   }
+  // }
+
   function handleResetSettings () {
-    setAdvancedSearchSettings({
-      country: null,
-      category: null,
-      startDate: null,
-      endDate: null,
-      sortBy: null,
-      duration: null,
-      features: []
-    })
+    setAdvancedSearchSettings(initialAdvancedSearchSettings)
   }
 
   function handleOpenAdvancedSearchModal () {
