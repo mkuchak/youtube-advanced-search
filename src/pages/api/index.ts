@@ -13,7 +13,7 @@ export default async function handler (
   }
 
   const youtubeSearch = await fetch(
-    `https://www.googleapis.com/youtube/v3/search/?key=${process.env.YOUTUBE_API_KEY}&part=snippet&maxResults=50&${query}`
+    `https://www.googleapis.com/youtube/v3/search/?key=${process.env.YOUTUBE_API_KEY}&part=id,snippet&maxResults=50&${query}`
   )
 
   const youtubeResponse = await youtubeSearch.json()
@@ -22,7 +22,7 @@ export default async function handler (
 }
 
 /*
-&part=snippet&maxResults=50
+&part=id,snippet&maxResults=50
 &order=relevance // date, rating, relevance, title, videoCount, viewCount
 &safeSearch=none // moderate, none, strict
 &type=video,channel,playlist

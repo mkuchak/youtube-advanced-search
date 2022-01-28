@@ -14,7 +14,7 @@ interface AdvancedSearchSettings {
   publishedAfter: Date | null;
   order: string | null;
   videoDuration: string | null;
-  type: { [key: string]: string };
+  type: string[];
   features: { [key: string]: string };
 }
 
@@ -25,6 +25,7 @@ interface AdvancedSearchContextData {
   handleDateChange: (date: Date, type: string) => void;
   handleSelectOne: (e: MouseEvent<HTMLButtonElement>) => void;
   handleSelectMany: (e: MouseEvent<HTMLButtonElement>) => void;
+  handleSelectManyToEntries: (e: MouseEvent<HTMLButtonElement>) => void;
   handleResetSettings: () => void;
   isAdvancedSearchModalOpen: boolean;
   handleOpenAdvancedSearchModal(): void;
@@ -46,7 +47,7 @@ const initialAdvancedSearchSettings: AdvancedSearchSettings = {
   publishedAfter: null,
   order: null,
   videoDuration: null,
-  type: {},
+  type: [],
   features: {}
 }
 
@@ -128,6 +129,26 @@ export function AdvancedSearchProvider ({
   }
 
   function handleSelectMany ({
+    currentTarget: { name, value }
+  }: MouseEvent<HTMLButtonElement>) {
+    const options = advancedSearchSettings[
+      name as keyof AdvancedSearchSettings
+    ] as string[]
+
+    if (options.includes(value)) {
+      setAdvancedSearchSettings((prevState) => ({
+        ...prevState,
+        [name]: options.filter((v) => v !== value)
+      }))
+    } else {
+      setAdvancedSearchSettings((prevState) => ({
+        ...prevState,
+        [name]: [...options, value]
+      }))
+    }
+  }
+
+  function handleSelectManyToEntries ({
     currentTarget: { name, value: selectedValue }
   }: MouseEvent<HTMLButtonElement>) {
     const options = advancedSearchSettings[
@@ -155,26 +176,6 @@ export function AdvancedSearchProvider ({
     }
   }
 
-  // function handleSelectMany ({
-  //   currentTarget: { name, innerText: value }
-  // }: MouseEvent<HTMLButtonElement>) {
-  //   const options = advancedSearchSettings[
-  //     name as keyof AdvancedSearchSettings
-  //   ] as string
-
-  //   if (options.includes(value)) {
-  //     setAdvancedSearchSettings((prevState) => ({
-  //       ...prevState,
-  //       [name]: options.filter((v) => v !== value)
-  //     }))
-  //   } else {
-  //     setAdvancedSearchSettings((prevState) => ({
-  //       ...prevState,
-  //       [name]: [...options, value]
-  //     }))
-  //   }
-  // }
-
   function handleResetSettings () {
     setAdvancedSearchSettings(initialAdvancedSearchSettings)
   }
@@ -196,6 +197,7 @@ export function AdvancedSearchProvider ({
         handleDateChange,
         handleSelectOne,
         handleSelectMany,
+        handleSelectManyToEntries,
         handleResetSettings,
         isAdvancedSearchModalOpen,
         handleOpenAdvancedSearchModal,

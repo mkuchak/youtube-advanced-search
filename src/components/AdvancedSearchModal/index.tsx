@@ -18,6 +18,7 @@ export function AdvancedSearchModal () {
     handleDateChange,
     handleSelectOne,
     handleSelectMany,
+    handleSelectManyToEntries,
     handleResetSettings,
     handleCloseAdvancedSearchModal
   } = useContext(AdvancedSearchContext)
@@ -194,24 +195,21 @@ export function AdvancedSearchModal () {
 
         <div className="flex overflow-x-auto space-x-2 w-full whitespace-nowrap">
           {Object.entries({
-            video: ['video', 'video'],
-            channel: ['channel', 'channel'],
-            playlist: ['playlist', 'playlist']
+            video: 'video',
+            channel: 'channel',
+            playlist: 'playlist'
           }).map((option) => (
             <button
               key={option[0]}
               name="type"
-              value={JSON.stringify({
-                key: option[1][0],
-                value: option[1][1]
-              })}
+              value={option[1]}
               type="button"
               onClick={handleSelectMany}
               className={classNames(
                 'py-1.5 px-3 text-sm font-light text-stone-800 rounded-full',
                 'lowercase hover:bg-stone-50 border border-stone-300',
                 'dark:text-slate-200 dark:hover:bg-slate-700 dark:border-slate-500',
-                Object.keys(advancedSearchSettings.type).includes(option[1][0])
+                advancedSearchSettings.type.includes(option[1])
                   ? 'text-[#1967D2] bg-[#E8F0FE] hover:bg-[#D2E3FC] dark:bg-slate-700 dark:hover:bg-slate-600 border-[#D2E3FC]'
                   : ''
               )}
@@ -247,7 +245,7 @@ export function AdvancedSearchModal () {
                 value: option[1][1]
               })}
               type="button"
-              onClick={handleSelectMany}
+              onClick={handleSelectManyToEntries}
               className={classNames(
                 'py-1.5 px-3 mr-2 mb-2 text-sm font-light text-stone-800 rounded-full',
                 'lowercase hover:bg-stone-50 border border-stone-300',
