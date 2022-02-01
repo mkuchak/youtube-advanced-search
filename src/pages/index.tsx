@@ -11,7 +11,7 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>YouTube - Advanced Search</title>
-        <meta name="description" content="Advanced YouTube search." />
+        <meta name="description" content="Advanced YouTube Search" />
       </Head>
 
       <main className="container flex flex-col justify-center items-center mx-auto h-screen">
@@ -24,8 +24,8 @@ const Home: NextPage = () => {
         </div>
 
         <div className="flex justify-center px-4 w-full">
-        <SearchBar />
-        <AdvancedSearchModal />
+          <SearchBar />
+          <AdvancedSearchModal />
         </div>
       </main>
     </>
