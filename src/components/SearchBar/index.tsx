@@ -36,7 +36,7 @@ export function SearchBar ({ minified }: { minified?: boolean }) {
 
   async function handleImFeelingLucky () {
     const res = await fetch(
-      `${process.env.API_URL}?${getQueryParams(query)}`
+      `${process.env.NEXT_PUBLIC_API_URL}?${getQueryParams(query)}`
     )
     const data = await res.json()
 

@@ -208,7 +208,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     .map((key) => `${key}=${query[key]}`)
     .join('&')
 
-  const res = await fetch(`${process.env.API_URL}?${queryString}`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}?${queryString}`)
   const data = await res.json()
 
   return {
