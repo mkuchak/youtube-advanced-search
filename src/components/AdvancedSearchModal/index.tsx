@@ -100,9 +100,9 @@ export function AdvancedSearchModal () {
             <span>From: </span>
             <DatePicker
               onChange={(date: Date) =>
-                handleDateChange(date, 'publishedBefore')
+                handleDateChange(date, 'publishedAfter')
               }
-              selected={advancedSearchSettings.publishedBefore}
+              selected={advancedSearchSettings.publishedAfter}
               className={classNames(
                 'p-1.5 font-light rounded-md border border-stone-300',
                 'w-[5.5rem] dark:text-slate-200 bg-transparent focus:ring-0',
@@ -114,9 +114,9 @@ export function AdvancedSearchModal () {
             <span>To: </span>
             <DatePicker
               onChange={(date: Date) =>
-                handleDateChange(date, 'publishedAfter')
+                handleDateChange(date, 'publishedBefore')
               }
-              selected={advancedSearchSettings.publishedAfter}
+              selected={advancedSearchSettings.publishedBefore}
               className={classNames(
                 'p-1.5 font-light rounded-md border border-stone-300',
                 'w-[5.5rem] dark:text-slate-200 bg-transparent focus:ring-0',
