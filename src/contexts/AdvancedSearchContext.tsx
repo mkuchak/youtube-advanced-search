@@ -20,6 +20,7 @@ interface AdvancedSearchSettings {
 
 interface AdvancedSearchContextData {
   advancedSearchSettings: AdvancedSearchSettings;
+  getQueryParams: (q: string) => string;
   totalSelectedSettings: (settings: AdvancedSearchSettings) => number;
   handleSelectOption: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleDateChange: (date: Date, type: string) => void;
@@ -84,6 +85,43 @@ export function AdvancedSearchProvider ({
       JSON.stringify(advancedSearchSettings)
     )
   }, [advancedSearchSettings])
+
+  function getQueryParams (q: string) {
+    const queryParams = new URLSearchParams()
+    queryParams.set('q', q)
+
+    Object.entries(advancedSearchSettings).forEach(([key, value]) => {
+      if (!value) {
+        return
+      }
+
+      if (value instanceof Date) {
+        queryParams.set(key, value.toISOString())
+        return
+      }
+
+      if (Array.isArray(value)) {
+        if (value.length) {
+          queryParams.set(key, value.join(','))
+        }
+        return
+      }
+
+      if (value instanceof Object) {
+        if (Object.keys(value).length) {
+          Object.entries<string>(value).forEach(([k, v]) => {
+            queryParams.set(k, v)
+          })
+        }
+        return
+      }
+
+      queryParams.set(key, value)
+    })
+
+    console.warn(decodeURIComponent(queryParams.toString()))
+    return decodeURIComponent(queryParams.toString())
+  }
 
   function totalSelectedSettings (settings: AdvancedSearchSettings) {
     return Object.values(settings).reduce((acc, curr) => {
@@ -192,6 +230,7 @@ export function AdvancedSearchProvider ({
     <AdvancedSearchContext.Provider
       value={{
         advancedSearchSettings,
+        getQueryParams,
         totalSelectedSettings,
         handleSelectOption,
         handleDateChange,
