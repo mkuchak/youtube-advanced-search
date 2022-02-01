@@ -18,5 +18,7 @@ export default async function handler (
 
   const youtubeResponse = await youtubeSearch.json()
 
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate')
+
   res.status(200).json(youtubeResponse)
 }
