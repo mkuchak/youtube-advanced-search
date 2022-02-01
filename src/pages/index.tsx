@@ -23,9 +23,10 @@ const Home: NextPage = () => {
           <YouTubeLogo />
         </div>
 
+        <div className="flex justify-center px-4 w-full">
         <SearchBar />
-
         <AdvancedSearchModal />
+        </div>
       </main>
     </>
   )
