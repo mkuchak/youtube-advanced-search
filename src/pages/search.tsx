@@ -132,7 +132,7 @@ export default function Search ({ data }: { data: Videos }) {
                 >
                   <div
                     className={classNames(
-                      'flex w-full',
+                      'flex w-full sm:w-fit',
                       item.id.kind === 'youtube#channel'
                         ? 'justify-center items-center'
                         : ''
