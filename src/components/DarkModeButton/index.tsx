@@ -38,7 +38,7 @@ export function DarkModeButton () {
         className={classNames(
           '!py-[0.3rem] !px-2 !mt-5 whitespace-nowrap !rounded-sm',
           '!text-slate-100 !bg-slate-900 dark:!bg-slate-800',
-          'after:!border-l-slate-900 dark:after:!border-l-slate-800'
+          'after:!border-b-slate-900 dark:after:!border-b-slate-800'
         )}
       >
         Toggle dark mode
