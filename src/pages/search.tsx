@@ -166,22 +166,25 @@ export default function Search ({ data }: { data: Videos }) {
                     className="flex flex-col justify-between py-2.5 px-4 space-y-4 text-[#4d5156] dark:text-[#e0dbd4]"
                     style={{ wordBreak: 'break-word' }}
                   >
-                    <p>
+                    <div>
                       {item.snippet.description
                         ? item.snippet.description
                         : `${item.snippet.title} ${item.id.kind
                           .split('#')
                           .pop()}`}
-                    </p>
-                    <p>
+                    </div>
+                    <div className="inline-flex space-x-1 xs:block xs:space-x-0">
                       <span className="capitalize">
                         {item.id.kind.split('#').pop()}
                       </span>
-                      {' • '}
-                      <span className="font-medium">
+                      <span className="xs:hidden">•</span>
+                      <a
+                        href={`https://youtube.com/channel/${item.snippet.channelId}`}
+                        className="font-medium hover:underline"
+                      >
                         {item.snippet.channelTitle}
-                      </span>
-                      {' • '}
+                      </a>
+                      <span className="xs:hidden">•</span>
                       <span>
                         {new Date(item.snippet.publishedAt).toLocaleDateString(
                           'en-US',
@@ -192,7 +195,7 @@ export default function Search ({ data }: { data: Videos }) {
                           }
                         )}
                       </span>
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
