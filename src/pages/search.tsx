@@ -147,7 +147,7 @@ export default function Search ({ data }: { data: Videos }) {
                         'flex justify-center items-center',
                         'object-cover bg-center bg-cover cursor-pointer',
                         item.id.kind === 'youtube#channel'
-                          ? 'w-[12rem] h-[12rem] rounded-full sm:min-w-[8rem] sm:h-[8rem]'
+                          ? 'w-[10rem] min-h-[10rem] rounded-full sm:min-w-[8rem] sm:h-[8rem]'
                           : 'min-w-full h-[12rem] rounded-2xl sm:min-w-[14rem] sm:h-[7.8rem]'
                       )}
                     >
